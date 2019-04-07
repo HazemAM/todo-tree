@@ -137,6 +137,7 @@ The extension can be customised as follows:
 | todo-tree.statusBar | <tt>none</tt> | What to show in the status bar - nothing (<tt>none</tt>), total count (<tt>total</tt>), counts per tag (<tt>tags</tt>) or the counts for the top three tags (<tt>top three</tt>) |
 | todo-tree.showCountsInTree | <tt>false</tt> | Set to true to show counts of TODOs in the tree |
 | todo-tree.labelFormat | <tt>${tag} ${after}</tt> | Format of the TODO item labels. Available placeholders are <tt>${line}</tt>, <tt>${column}</tt>, <tt>${tag}</tt>, <tt>${before}</tt> (text from before the tag), <tt>${after}</tt> (text from after the tag) and <tt>${filename}</tt>. |
+| todo-tree.multiline | <tt>false</tt> | Set to true to enable multiline TODOs (see Known Issues). |
 
 <sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 
@@ -160,6 +161,20 @@ Tracking the file in the tree view when grouping by tag will reveal the first ta
 
 When there is no current workspace, default icons will be shown in the tree.
 
+### Multiline TODOs
+
+If `todo-tree.multiline` is enabled, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.tags` it will be assumed that they belong to the previous result that did have a tag. You will need change the default regex to something like:
+```
+"todo-tree.regex": "(//)\\s*($TAGS).*(\\\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
+```
+This will now match multiline TODOs where the extra lines have at least two spaces between the comment characters and the TODO item. e.g.
+```
+// TODO multiline example
+//  second line
+//  third line
+```
+
+*Note: This will break markdown TODO matches and may have other unexpected results. There may also be a reduction in performance.*
 
 ## Donate
 

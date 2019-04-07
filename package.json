@@ -374,6 +374,11 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show only tag elements in tree"
+                },
+                "todo-tree.multiline": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Set to true to enable multiline todos (see Known Issues)"
                 }
             }
         }
