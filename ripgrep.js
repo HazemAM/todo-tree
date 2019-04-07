@@ -11,6 +11,7 @@
 'use strict';
 const child_process = require( 'child_process' );
 const fs = require( 'fs' );
+const utils = require( './utils' );
 
 var currentProcess;
 
@@ -29,9 +30,27 @@ function formatResults( stdout )
         return [];
     }
 
-    return stdout
-        .split( '\n' )
-        .map( ( line ) => new Match( line ) );
+    var lines = stdout.split( '\n' ).reverse();
+
+    var results = [];
+    var extraLines = [];
+    lines.map( function( line )
+    {
+        var match = new Match( line );
+        var extracted = utils.extractTag( match.match );
+        if( extracted.tag )
+        {
+            match.extraLines = extraLines.reverse();
+            extraLines = [];
+            results.push( match );
+        }
+        else
+        {
+            extraLines.push( match );
+        }
+    } );
+
+    return results;
 }
 
 /**
